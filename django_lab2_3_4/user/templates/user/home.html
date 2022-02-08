@@ -1,0 +1,75 @@
+{%extends "parent.html"%}
+{%block content%}
+
+<h1 class="text-center">Hello {{request.session.username}} From Home</h1>
+{%if request.session.username%}
+<form method="post" action="{%url 'create_user'%}" class="w-50 mx-auto my-5">
+        {%csrf_token%}
+         <div class="mb-3">
+             {{create_form.as_p}}
+        </div>
+         <button type="submit" class="btn btn-primary">Create User</button>
+    </form>
+
+<table class="table w-50 mx-auto">
+<tr>
+  <th>User Id</th>
+  <th>User Name </th>
+  <th>Delete User</th>
+  <th>Update User</th>
+</tr>
+{% for i in users %}
+<tr>
+  <td> {{ i.id }}</td>
+  <td> {{ i.name }}</td>
+  <td><a class="btn btn-primary" href="{%url 'delete_user' i.id%}">Delete User</a></td>
+    <td>
+        <form method="post" action="{%url 'update_user' i.id%}">
+        {%csrf_token%}
+         <div class="mb-3">
+        {{update_form.as_p}}
+        </div>
+         <button type="submit" class="btn btn-primary">Update User</button>
+    </form>
+    </td>
+</tr>
+{% endfor %}
+</table>
+
+
+<form method="get" action="{%url 'search_user'%}" class="w-50 mx-auto my-5">
+         <div class="mb-3">
+        <label for="user_name_2" class="form-label">User Name</label>
+        <input type="text" class="form-control" id="user_name_2" aria-describedby="username-help" name="user_name">
+        </div>
+         <button type="submit" class="btn btn-primary">Search User</button>
+    </form>
+{%if request.session.user_selected %}
+<table class="table w-50 mx-auto">
+<tr>
+  <th>User Id</th>
+  <th>User Name </th>
+  <th>Delete User</th>
+  <th>Update User</th>
+</tr>
+
+{% for x in request.session.user_selected %}
+<tr>
+  <td> {{ x.id }}</td>
+  <td> {{ x.name }}</td>
+  <td><a class="btn btn-primary" href="{%url 'delete_user' x.id%}">Delete User</a></td>
+    <td>
+        <form method="post" action="{%url 'update_user' x.id%}">
+        {%csrf_token%}
+         <div class="mb-3">
+        {{update_form.as_p}}
+        </div>
+         <button type="submit" class="btn btn-primary">Update User</button>
+    </form>
+    </td>
+</tr>
+{% endfor %}
+</table>
+{%endif%}
+{%endif%}
+{%endblock%}
