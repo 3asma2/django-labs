@@ -1,2 +1,2 @@
 # django-labs
-#lab2,3,4,5
+lab2,3,4,5
